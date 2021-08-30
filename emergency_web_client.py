@@ -9,19 +9,32 @@ import time
 import os
 URL = "https://api.b-iot.ch/relays/emergency"
 SLEEP_TIME = 600 # 10 minutes
+DEFAULT_RELAY_ID = "relay_0"
   
 
 # Get the relayID from the config:
-relay_id = "TODO"
+relay_id = DEFAULT_RELAY_ID
+try:
+    f = open("/home/pi/biot/config/.config", "r")
+    lines = f.readlines()
+    for l in lines:
+        if "relayID" in l:
+            relay_id = l.split(":")[1]
+            relay_id = relay_id[1:-1]
+except IOError:
+    # No .config file, send the default id
+    relay_id = DEFAULT_RELAY_ID
+finally:
+    f.close()
 
-PARAMS = {'relayID':relayID}
+PARAMS = {"relayID":relay_id}
 
 while True:  
     r = requests.get(url = URL, params = PARAMS)
     data = r.json()
 
-    repo_url = data['results'][0]['repoURL']
-    force_flag = data['results'][0]['force']
+    repo_url = data['repoURL']
+    force_flag = data['force']
 
     if force_flag:
         # Delete possible old repo
