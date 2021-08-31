@@ -7,8 +7,8 @@
 import requests
 import time
 import os
-URL = "https://api.b-iot.ch/relays/emergency"
-SLEEP_TIME = 600 # 10 minutes
+URL = "https://api.b-iot.ch/api/relays/emergency"
+SLEEP_TIME = 10 # 10 minutes
 DEFAULT_RELAY_ID = "relay_0"
   
 
@@ -22,6 +22,8 @@ try:
             relay_id = l.split(":")[1]  
             relay_id = relay_id.replace('"', '')
             relay_id = relay_id.replace(',', '')
+            relay_id = relay_id.replace('\n', '')
+            relay_id = relay_id.replace('\r', '')
             break
     
     f.close()
@@ -31,16 +33,29 @@ except IOError:
 
 PARAMS = {"relayID":relay_id}
 
+print("Emergency web client has started!")
+
 while True:  
     time.sleep(SLEEP_TIME)
 
+    print("Emergency web client: send request...")
     r = requests.get(url = URL, params = PARAMS)
-    data = r.json()
+    if r.status_code == 200:
+        try:
+            data = r.json()
 
-    repo_url = data['repoURL']
-    force_flag = data['force']
+            repo_url = data['repoURL']
+            force_flag = data['forceReset']
 
-    if force_flag:
-        print("EMERGENCY: Resetting repository")
-        # Delete possible old repo
-        os.system(f"rm -rf /home/pi/biot/relays_biot && cd /home/pi/biot && git clone \"{repo_url}\" && sudo reboot")
+            print(f"Emergency web client: repo url: {repo_url}")
+            if force_flag:
+                print("EMERGENCY: Resetting repository")
+                # Delete possible old repo
+                os.system(f"rm -rf /home/pi/biot/relays_biot && cd /home/pi/biot && git clone \"{repo_url}\" && sudo reboot")
+            else:
+                print("Emergency web client: no reset needed")
+        except:
+            print("Emergency web client: ERROR while decoding response!")
+
+    else:
+        print(f"Emergency web client: error in received response, status_code = {r.status_code}")
