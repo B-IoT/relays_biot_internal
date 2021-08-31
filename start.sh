@@ -5,5 +5,5 @@ while ! (ping -c 1 -W 1 1.2.3.4 | grep -q 'statistics'); do
     sleep 10
 done
 
-pip3 install -r requirements.txt
-python3 emergency_web_client.py >> /home/pi/biot/logs/emergency_web_client.py
+sudo -u pi pip3 install -r requirements.txt
+sudo -u pi python3 emergency_web_client.py >> /home/pi/biot/logs/emergency_web_client.py
