@@ -19,17 +19,21 @@ try:
     lines = f.readlines()
     for l in lines:
         if "relayID" in l:
-            relay_id = l.split(":")[1]
-            relay_id = relay_id[1:-1]
+            relay_id = l.split(":")[1]  
+            relay_id = relay_id.replace('"', '')
+            relay_id = relay_id.replace(',', '')
+            break
+    
+    f.close()
 except IOError:
     # No .config file, send the default id
     relay_id = DEFAULT_RELAY_ID
-finally:
-    f.close()
 
 PARAMS = {"relayID":relay_id}
 
 while True:  
+    time.sleep(SLEEP_TIME)
+
     r = requests.get(url = URL, params = PARAMS)
     data = r.json()
 
@@ -37,8 +41,6 @@ while True:
     force_flag = data['force']
 
     if force_flag:
+        print("EMERGENCY: Resetting repository")
         # Delete possible old repo
         os.system(f"rm -rf /home/pi/biot/relays_biot && cd /home/pi/biot && git clone \"{repo_url}\" && sudo reboot")
-        
-
-    time.sleep(SLEEP_TIME)
