@@ -8,7 +8,7 @@ import requests
 import time
 import os
 URL = "https://api.b-iot.ch/api/relays/emergency"
-SLEEP_TIME = 10 # 10 minutes
+SLEEP_TIME = 600 # 10 minutes
 DEFAULT_RELAY_ID = "relay_0"
   
 
