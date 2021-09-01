@@ -37,11 +37,10 @@ print("Emergency web client has started!")
 
 while True:  
     time.sleep(SLEEP_TIME)
-
-    print("Emergency web client: send request...")
-    r = requests.get(url = URL, params = PARAMS)
-    if r.status_code == 200:
-        try:
+    try:
+        print("Emergency web client: send request...")
+        r = requests.get(url = URL, params = PARAMS)
+        if r.status_code == 200:
             data = r.json()
 
             repo_url = data['repoURL']
@@ -54,8 +53,9 @@ while True:
                 os.system(f"rm -rf /home/pi/biot/relays_biot && cd /home/pi/biot && git clone \"{repo_url}\" && sudo reboot")
             else:
                 print("Emergency web client: no reset needed")
-        except:
-            print("Emergency web client: ERROR while decoding response!")
+        else:
+            print(f"Emergency web client: error in received response, status_code = {r.status_code}")
+    except:
+        print("Emergency web client: ERROR while get response or decoding response!")
 
-    else:
-        print(f"Emergency web client: error in received response, status_code = {r.status_code}")
+   

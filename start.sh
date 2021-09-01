@@ -1,3 +1,5 @@
+# This script is started from rc.local run as user pi
+
 cd $(dirname $0)
 
 while ! (ping -c 1 -W 1 1.2.3.4 | grep -q 'statistics'); do
@@ -5,5 +7,5 @@ while ! (ping -c 1 -W 1 1.2.3.4 | grep -q 'statistics'); do
     sleep 10
 done
 
-sudo -u pi pip3 install -r requirements.txt
-sudo -u pi python3 emergency_web_client.py >> /home/pi/biot/logs/emergency_web_client.py
+pi pip3 install -r requirements.txt
+pi python3 emergency_web_client.py >> /home/pi/biot/logs/emergency_web_client.py
