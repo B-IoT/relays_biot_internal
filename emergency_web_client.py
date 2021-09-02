@@ -49,13 +49,10 @@ while True:
             print(f"Emergency web client: repo url: {repo_url}")
             if force_flag:
                 print("EMERGENCY: Resetting repository")
-                # Delete possible old repo
-                os.system(f"rm -rf /home/pi/biot/relays_biot && cd /home/pi/biot && git clone \"{repo_url}\" && sudo reboot")
+                os.system(f"rm -rf /home/pi/biot/relays_biot && cd /home/pi/biot && git clone \"{repo_url}\" && chmod +x /home/pi/biot/relays_biot/start.sh && sudo reboot")
             else:
                 print("Emergency web client: no reset needed")
         else:
             print(f"Emergency web client: error in received response, status_code = {r.status_code}")
     except:
         print("Emergency web client: ERROR while get response or decoding response!")
-
-   
