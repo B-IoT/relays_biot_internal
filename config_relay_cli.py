@@ -37,8 +37,8 @@ class RelayConfigCLI:
 
     # The callback for when a PUBLISH message is received from the server.
     def on_message_mqtt(self, client, userdata, msg):
-        if msg.topic == self.TOPIC_CONFIG:
-            print("message = "+str(msg.payload))     
+            print("topic=" + msg.topic + "message = "+str(msg.payload))     
+
     
     def connect_mqtt(self):
         # Connect the client to mqtt:
@@ -56,7 +56,7 @@ class RelayConfigCLI:
                 self.mqttClient.connect(self.MQTT_URL, port=self.MQTT_PORT, keepalive=60)
                 flag_error = False
             except:
-                print("Cannot conect, probably due to lack of network. Wait and retry...")
+                print("Cannot connect, probably due to lack of network. Wait and retry...")
                 flag_error = True
                 time.sleep(1)
         
