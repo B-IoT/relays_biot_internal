@@ -1,5 +1,4 @@
 import paho.mqtt.client as mqtt
-import json
 from paho.mqtt.client import *
 import time
 
@@ -37,7 +36,7 @@ class RelayConfigCLI:
 
     # The callback for when a PUBLISH message is received from the server.
     def on_message_mqtt(self, client, userdata, msg):
-            print("topic=" + msg.topic + "message = "+str(msg.payload))     
+            print("Topic = " + msg.topic + ", message = " + str(msg.payload))     
 
     
     def connect_mqtt(self):
@@ -45,8 +44,8 @@ class RelayConfigCLI:
         self.mqttClient = mqtt.Client(client_id=self.mqttID, clean_session=True, userdata=None, protocol=MQTTv311, transport="websockets")
         self.mqttClient.will_set("will", payload="{\"company\": \"biot\"}", qos=0, retain=False)
         self.mqttClient.username_pw_set(self.mqttUsername, self.mqttPassword)
-        # UNCOMMENT TO USE WSS
-        #client.tls_set(ca_certs=self.CERTIFICATE_PATH) 
+        # Comment to use WS without SSL
+        self.mqttClient.tls_set(ca_certs=self.CERTIFICATE_PATH) 
         self.mqttClient.on_connect = self.on_connect_mqtt
         self.mqttClient.on_message = self.on_message_mqtt
 
@@ -56,7 +55,7 @@ class RelayConfigCLI:
                 self.mqttClient.connect(self.MQTT_URL, port=self.MQTT_PORT, keepalive=60)
                 flag_error = False
             except:
-                print("Cannot connect, probably due to lack of network. Wait and retry...")
+                print("Cannot connect, probably due to lack of network or server not responding. Wait and retry...")
                 flag_error = True
                 time.sleep(1)
         
