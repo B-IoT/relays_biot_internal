@@ -25,7 +25,7 @@ class RelayConfigCLI:
 
     # The callback for when the client receives a CONNACK response from the server.
     def on_connect_mqtt(self, client, userdata, flags, rc):
-        print("Connected with result code "+str(rc))
+        print("Connected with result code " + str(rc))
 
         # Subscribing in on_connect() means that if we lose the connection and
         # reconnect then subscriptions will be renewed.
@@ -36,7 +36,8 @@ class RelayConfigCLI:
 
     # The callback for when a PUBLISH message is received from the server.
     def on_message_mqtt(self, client, userdata, msg):
-            print("Topic = " + msg.topic + ", message = " + str(msg.payload))     
+        if msg.topic == self.TOPIC_CONFIG:
+            print("Message = " + msg.payload.decode("utf-8"))     
 
     
     def connect_mqtt(self):
