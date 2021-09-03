@@ -7,25 +7,23 @@
 import requests
 import time
 import os
+import json
+
 URL = "https://api.b-iot.ch/api/relays/emergency"
 SLEEP_TIME = 600 # 10 minutes
 DEFAULT_RELAY_ID = "relay_0"
+CONF_FILE_PATH = "/home/pi/biot/config/.config"
 
 # Get the relayID from the config:
 relay_id = DEFAULT_RELAY_ID
 try:
-    f = open("/home/pi/biot/config/.config", "r")
-    lines = f.readlines()
-    for l in lines:
-        if "relayID" in l:
-            relay_id = l.split(":")[1]  
-            relay_id = relay_id.replace('"', '')
-            relay_id = relay_id.replace(',', '')
-            relay_id = relay_id.replace('\n', '')
-            relay_id = relay_id.replace('\r', '')
-            break
+    f = open(CONF_FILE_PATH, 'r')
+    # Cannot open file .config
 
+    config = json.load(f)
     f.close()
+    relay_id = config["relayID"]
+
 except IOError:
     # No .config file, send the default id
     relay_id = DEFAULT_RELAY_ID
