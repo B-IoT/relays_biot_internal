@@ -30,7 +30,7 @@ except IOError:
 
 PARAMS = {"relayID":relay_id}
 
-print("Emergency web client has started!")
+print(f"Emergency web client has started with relayID = {relay_id}!")
 
 while True:
     time.sleep(SLEEP_TIME)
