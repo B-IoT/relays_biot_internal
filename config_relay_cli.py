@@ -14,8 +14,8 @@ class RelayConfigCLI:
 
         self.relayID = "relay_biot"
         self.mqttID = "relay_biot"
-        self.mqttUsername = "relayBiot_biot"
-        self.mqttPassword = "relayBiot_biot"
+        self.mqttUsername = "relayBiot_relay_biot"
+        self.mqttPassword = "1049951da8f30def080f2a502d7708027905754813d624a5c72d38bda03a4a11"
 
         self.mqttClient = None
 
