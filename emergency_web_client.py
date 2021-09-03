@@ -10,7 +10,6 @@ import os
 URL = "https://api.b-iot.ch/api/relays/emergency"
 SLEEP_TIME = 600 # 10 minutes
 DEFAULT_RELAY_ID = "relay_0"
-  
 
 # Get the relayID from the config:
 relay_id = DEFAULT_RELAY_ID
@@ -25,7 +24,7 @@ try:
             relay_id = relay_id.replace('\n', '')
             relay_id = relay_id.replace('\r', '')
             break
-    
+
     f.close()
 except IOError:
     # No .config file, send the default id
@@ -35,7 +34,7 @@ PARAMS = {"relayID":relay_id}
 
 print("Emergency web client has started!")
 
-while True:  
+while True:
     time.sleep(SLEEP_TIME)
     try:
         print("Emergency web client: send request...")
