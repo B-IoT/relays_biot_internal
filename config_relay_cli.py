@@ -9,7 +9,6 @@ class RelayConfigCLI:
     MQTT_PORT = 443
     CERTIFICATE_PATH = "./isrgrootx1.pem"
 
-
     def __init__(self):
         self.quit = False
 
@@ -25,8 +24,6 @@ class RelayConfigCLI:
 
     # The callback for when the client receives a CONNACK response from the server.
     def on_connect_mqtt(self, client, userdata, flags, rc):
-        print("Connected with result code " + str(rc))
-
         # Subscribing in on_connect() means that if we lose the connection and
         # reconnect then subscriptions will be renewed.
         client.subscribe(self.TOPIC_CONFIG, 1)
@@ -69,6 +66,6 @@ if __name__ == "__main__":
     cli = RelayConfigCLI()
     cli.connect_mqtt()
     while not cli.quit:
-        i = input("Press q + Enter to quit: ")
+        i = input("Press q + Enter to quit:\n")
         if "q" in i or "Q" in i:
             cli.quit = True
